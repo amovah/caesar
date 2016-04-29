@@ -10,7 +10,7 @@ fn main() {
         if index == 0 {
             mode = arg;
         } else {
-            text = arg;
+            text = text + &arg + &" ";
         }
     }
 

@@ -3,33 +3,35 @@ pub use self::caesar::{ encrypt, decrypt };
 mod caesar {
     fn enc(x: char) -> char {
         let ap: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect();
-        let index: usize = match ap.binary_search(&x) {
-            Ok(ind) => (ind + 13) % 26,
+        let res: char;
+        match ap.binary_search(&x) {
+            Ok(ind) => {
+                res = ap[(ind + 13) % 26];
+            },
             Err(_) => {
-                panic!("Something is wrong");
+                res = x;
             }
         };
 
-        ap[index]
+        res
     }
 
     fn dec(x: char) -> char {
         let ap: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect();
-        let mut index: usize;
+        let res: char;
         match ap.binary_search(&x) {
-            Ok(mut ind) => {
-                ind = (ind - 13) % 26;
-                if ind < 0 {
-                    ind = !ind;
+            Ok(mut index) => {
+                if index < 13 {
+                    index = index + 26;
                 }
-                index = ind;
+                res = ap[index - 13];
             },
             Err(_) => {
-                panic!("Something is wrong");
+                res = x;
             }
         };
 
-        ap[index]
+        res
     }
 
     pub fn encrypt(text: &String) -> String {
@@ -39,7 +41,7 @@ mod caesar {
             res.push(enc(item));
         }
 
-        res
+        String::from(res.trim())
     }
 
     pub fn decrypt(text: &String) -> String {
@@ -49,6 +51,6 @@ mod caesar {
             res.push(dec(item));
         }
 
-        res
+        String::from(res.trim())
     }
 }
